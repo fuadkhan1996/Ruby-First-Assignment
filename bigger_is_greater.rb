@@ -1,30 +1,35 @@
-#method to get previous smallest element from right to left
-def find_previous_smallest(string)
-    i = -1
-    string.size.times do |index|
-        return (index*-1) - 2 if index != (string.size - 1) && string[(index*-1) - 1] > string[(index*-1) - 2]
-        i = i - 1
-    end
-    return nil
+# method to get previous smallest element by comparing every two elements from right to left
+def find_previous_smallest(word)
+  i = -1
+  word.size.times do |index|
+    return (index * -1) - 2 if index != (word.size - 1) && 
+        word[(index * -1) - 1] > word[(index * -1) - 2]
+    i = i - 1
+  end
+
+  nil
 end
 
-def next_largest(string, index)
-    array = string.split(//)
+# Method returns the next largest number if exist
+def get_next_largest(word)
+  index = find_previous_smallest(word)
+  return "No Answer" if index == nil
+
+  char_in_word_array = word.split(//)
     
-    #getting next largest number in array from index + 1 to size
-    _arry = array[index..-1].select{|character| character > array[index]}.sort()[0]
-    string = string.reverse
+  next_smaller_char = char_in_word_array[index..-1].select{ |char_in_word|
+    char_in_word > char_in_word_array[index] }.sort()[0]
+  word = word.reverse
     
-    #swapping
-    string[index.abs - 1], string[string.index(_arry)] = string[string.index(_arry)], string[index.abs - 1]
+  word[index.abs - 1], word[word.index(next_smaller_char)] =
+  word[word.index(next_smaller_char)], word[index.abs - 1]
     
-    string = string.reverse
-    
-    #sorting all characters after index and returning a concatinated string
-    ((string.slice(0..index).split(//) << string.slice(index+1..-1).split(//).sort).join(''))
+  word = word.reverse
+  
+  (word.slice(0..index).split(//) << word.slice(index+1..-1)
+  .split(//).sort).join('')
 end
 
-string  = "fedcbabcd"
-index = find_previous_smallest(string)
-answer = index == nil ? "No Answer" : next_largest(string,index)
+word  = "fedcbabcd"
+answer = get_next_largest(word)
 puts(answer)
